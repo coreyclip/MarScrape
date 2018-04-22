@@ -1,0 +1,116 @@
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup as bs
+import time
+from splinter import Browser
+from pprint import pprint
+
+
+
+# urls
+news_url = "https://mars.nasa.gov/news/"
+featured_pic_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
+weather_url = "https://twitter.com/marswxreport?lang=en"
+facts_url = "http://space-facts.com/mars/"
+
+
+#lists to fill
+titles = []
+headlines = []
+news_records = []
+martian_weather = []
+featured_image_url = None
+martian_weather = []
+hemisphere_image_urls = []
+
+
+executable_path = {'executable_path':'D:/Chromedriver/chromedriver.exe'}
+#browser = Browser('chrome', **executable_path)
+browser = Browser(driver_name='chrome')
+browser.visit(news_url)
+soup = bs(browser.html, 'html.parser')
+
+#all the div tags with the class 'content_title'
+for title in soup.find_all("div", class_='content_title'):
+    print("-0-" * 10)
+    title_string = title.find('a').string
+    print(title_string)
+    titles.append(title_string)
+
+for text in soup.find_all("div", class_='article_teaser_body'):
+    print("-0-" * 10)
+    print("\n")
+    teaser_text = text.text
+    print(teaser_text)
+    headlines.append(teaser_text)
+
+
+for title, hl in zip(titles, headlines):
+    news_records.append({
+            'title': title,
+            'headline':hl,
+            })
+    
+pprint(news_records)
+
+
+browser.visit(featured_pic_url)
+# navigate browser to target page
+browser.click_link_by_id("full_image")
+img_soup = bs(browser.html, 'html.parser')
+featured_image_url = soup.find("img", class_="fancybox-image")['src']
+
+browser.visit(weather_url)
+twitter_soup = bs(browser.html, 'html.parser')
+tweets = twitter_soup.find_all("div", class_="js-tweet-text-container")
+for tweet in tweets:
+    print(tweet.p.text)
+    print("##" *20)
+    martian_weather.append(tweet.p.text)
+
+for tweet in martian_weather:
+    try:
+        #if this passes it follows the weather tweeting format from 04/21/2018
+        time_string = tweet.split("),")[0].split(" (")[1]
+        print("Most recent weather tweet: "+ time_string)
+        #get the most recent weather tweet
+        mars_weather = tweet
+        print(mars_weather)
+        break
+    except:
+        pass
+
+browser.visit(facts_url)
+facts_soup = bs(browser.html, features='html.parser')
+table = facts_soup.find('table')
+# print(table)
+raw_table = pd.read_html(str(table), flavor="bs4")
+
+#print(type(raw_table))
+headers = raw_table[0][0]
+data = raw_table[0][1]
+
+# saving it as a dataframe
+df = pd.DataFrame(data=data.values).T.rename(columns=headers)
+
+#saving it as a new string
+reformated_table_str = df.to_html()
+
+hemisphere_image_urls = [
+    {"title": "Valles Marineris Hemisphere", "img_url":"https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif/full.jpg" },
+    {"title": "Cerberus Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/cerberus_enhanced.tif/full.jpg"},
+    {"title": "Schiaparelli Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif/full.jpg"},
+    {"title": "Syrtis Major Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg"},
+]
+
+
+final_json = {
+
+    "nasa_news": news_records,
+    "featured_image_url":featured_image_url,
+    "martian_weather":mars_weather,
+    "fact_table": reformated_table_str,
+    "hemisphere_images_urls":hemisphere_image_urls,
+
+
+}
