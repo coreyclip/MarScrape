@@ -103,14 +103,15 @@ hemisphere_image_urls = [
     {"title": "Syrtis Major Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg"},
 ]
 
+datetime
 
 final_json = {
-
-    "nasa_news": news_records,
-    "featured_image_url":featured_image_url,
-    "martian_weather":mars_weather,
-    "fact_table": reformated_table_str,
-    "hemisphere_images_urls":hemisphere_image_urls,
-
-
+    "timestamp":str(datetime.now()),
+    "records":{
+        "nasa_news": news_records,
+        "featured_image_url":featured_image_url,
+        "martian_weather":mars_weather,
+        "fact_table": reformated_table_str,
+        "hemisphere_images_urls":hemisphere_image_urls,
+        }
 }
