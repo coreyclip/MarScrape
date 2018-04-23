@@ -4,7 +4,18 @@ from bs4 import BeautifulSoup as bs
 import time
 from splinter import Browser
 from pprint import pprint
+from datetime import datetime
+import pymongo
 
+
+print("Initialize PyMongo to work with MongoDBs")
+conn = 'mongodb://localhost:27017'
+client = pymongo.MongoClient(conn)
+
+# Define database and collection
+db = client.mars_scrape
+collection = db.mars_web
+print('Mongo Initialized')
 
 
 # urls
@@ -25,23 +36,23 @@ hemisphere_image_urls = []
 
 
 executable_path = {'executable_path':'D:/Chromedriver/chromedriver.exe'}
-#browser = Browser('chrome', **executable_path)
-browser = Browser(driver_name='chrome')
+browser = Browser('chrome', **executable_path)
+#browser = Browser(driver_name='chrome')
 browser.visit(news_url)
 soup = bs(browser.html, 'html.parser')
 
 #all the div tags with the class 'content_title'
 for title in soup.find_all("div", class_='content_title'):
-    print("-0-" * 10)
+    #print("-0-" * 10)
     title_string = title.find('a').string
-    print(title_string)
+    #print(title_string)
     titles.append(title_string)
 
 for text in soup.find_all("div", class_='article_teaser_body'):
-    print("-0-" * 10)
-    print("\n")
+    #print("-0-" * 10)
+    #print("\n")
     teaser_text = text.text
-    print(teaser_text)
+    #print(teaser_text)
     headlines.append(teaser_text)
 
 
@@ -50,15 +61,26 @@ for title, hl in zip(titles, headlines):
             'title': title,
             'headline':hl,
             })
-    
+
+print('finished gathering news_records')    
 pprint(news_records)
 
 
+print('gathering featured images')
 browser.visit(featured_pic_url)
 # navigate browser to target page
 browser.click_link_by_id("full_image")
+time.sleep(2)
 img_soup = bs(browser.html, 'html.parser')
-featured_image_url = soup.find("img", class_="fancybox-image")['src']
+print("locate the featured image src")
+print(img_soup.find("img"))
+print(f'{" " *10}|\n' *4 )
+print(img_soup.find("img", class_="fancybox-image"))
+print(f'{" " *10}|\n' *4 )
+
+print(img_soup.find("img", class_="fancybox-image")['src'])
+featured_image_url = img_soup.find("img", class_="fancybox-image")['src']
+
 
 browser.visit(weather_url)
 twitter_soup = bs(browser.html, 'html.parser')
@@ -103,7 +125,7 @@ hemisphere_image_urls = [
     {"title": "Syrtis Major Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg"},
 ]
 
-datetime
+
 
 final_json = {
     "timestamp":str(datetime.now()),
@@ -114,4 +136,12 @@ final_json = {
         "fact_table": reformated_table_str,
         "hemisphere_images_urls":hemisphere_image_urls,
         }
-}
+    }
+
+print("record to be inserted to MongoDB")
+print("====" * 50)
+pprint(final_json)
+try:
+    collection.insert_one(final_json)
+except Exception as e:
+    print(e)
