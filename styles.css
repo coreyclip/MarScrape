@@ -1,3 +1,13 @@
 #header-extension {
     background-color: #eee;
 }
+
+#white_bold {
+    color: whitesmoke;
+    font-family: Courier New, Courier, monospace;
+    border: #eee;
+}
+
+#p.container {
+    background-image: #ffffff url('../imgs/mission_to_mars.jpg') repeat center center;
+}
