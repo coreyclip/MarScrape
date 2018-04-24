@@ -34,7 +34,7 @@ def index():
     hemisphere_image_urls = records['hemisphere_image_urls']
 
 
-    return render_template("index.html")
+    return render_template("index.html", weather=weather, table=table)
 
 #  route called `/scrape` that will import
 #  your `scrape_mars.py`
