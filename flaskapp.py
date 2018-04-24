@@ -3,13 +3,15 @@ import pymongo
 from flask_pymongo import PyMongo
 
 # Initialize PyMongo to work with MongoDBs
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
+#conn = 'mongodb://localhost:27017'
+#client = pymongo.MongoClient(conn)
 
+app = Flask(__name__)
+mongo = PyMongo(app)
 
 def mongo_pull():
     # Define database and collection
-    db = client.mars_scrape
+    db = mongo.mars_scrape
     # by definition find_one gets the most recent doc, if no query logic
     doc = db.mars_web.find_one()
     print('Mongo Initialized')

@@ -9,5 +9,6 @@
 }
 
 #p.container {
-    background-image: #ffffff url('../imgs/mission_to_mars.jpg') repeat center center;
+    background-image: url('/imgs/mission_to_mars.jpg') repeat center;
+    text-align: center;
 }
