@@ -1,6 +1,6 @@
-from flask import Flask, jsonify,render_template
+from flask import Flask, jsonify, render_template, redirect
 import pymongo
-
+from flask_pymongo import PyMongo
 
 # Initialize PyMongo to work with MongoDBs
 conn = 'mongodb://localhost:27017'
