@@ -7,16 +7,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Wow Mars!</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" media="screen" href='styles.css'/>
+  <link rel="stylesheet" type="text/css" media="screen" href='../styles.css'/>
 </head>
 
 <body>
-    <div class="container text-center", style="background:transparent url('imgs/mission_to_mars.jpg') no-repeat center center /cover; margin-bottom:5px; height:121pt;width: auto;">
+    <div class="container text-center", style="background:transparent url('../imgs/mission_to_mars.jpg') no-repeat center center /cover; margin-bottom:5px; height:121pt;width: auto;">
         <h1 class="white_bold" >Mars Facts</h1>
             <div class='col-md-12'> 
                 <button class='btn-primary btn-lg' href='/scrape' role='button'>Find Mars Facts</button>
                     </div>
         <div class='row'>
+            
             <div class='col-md-10'>
 
                 </div>
@@ -33,22 +34,24 @@
                 <h1>Latest Martian News</h1>
                 <h3>{{records['nasa_news'][0]['title']}}</h3>
                 <p> {{records['nasa_news'][0]['headline']}}</p>
+                <h3>{{records['nasa_news'][1]['title']}}</h3>
+                <p> {{records['nasa_news'][1]['headline']}}</p>
             </div>
         </div>
 
         <div class='row'>
-                <div class='col-6-md'>
+                <div class='col-8-md'>
                     <h1> Featured Mars Image</h1>
-                    <img src={{records["featured_image_url"]}} alt="featured martian image">
+                    <img src= {{ records["featured_image_url"] }} alt="featured martian image">
 
                 </div>
-                <div class='col-6-md'>
+                <div class='col-4-md'>
                     <div class='row'>
                         <h4>Martian Weather</h4>
                         <p>{{ records['martian_weather'] }}</p>
                         </div>
                     <div class='row'>
-                        {{records['fact_table']}}
+                            {{records['fact_table']}}
                         </div>
                 </div>
                 

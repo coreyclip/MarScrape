@@ -117,6 +117,7 @@ def scrape_nasa():
 
     #saving it as a new string
     reformated_table_str = df.to_html()
+    print(reformated_table_str)
 
     hemisphere_image_urls = [
         {"title": "Valles Marineris Hemisphere", "img_url":"https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/valles_marineris_enhanced.tif/full.jpg" },
@@ -145,3 +146,5 @@ def scrape_nasa():
         collection.insert_one(final_json)
     except Exception as e:
         print(e)
+    return final_json
+

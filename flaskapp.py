@@ -21,14 +21,12 @@ def mongo_pull():
     records = doc['records']
 
     return records
-    
+
+records = mongo_pull()    
 
 #index page
 @app.route('/')
-def index():
-    
-    records = mongo_pull()
-
+def index(records):
     return render_template("index.html", records=records)
 
 #  route called `/scrape` that will import
@@ -36,13 +34,15 @@ def index():
 #  script and call your `scrape` function.
 
 @app.route("/scrape")
-def scrape():
+def scrape(records):
     # perform scraping 
     data = mars_scrape.scrape_nasa()
+    records = mongo_pull()    
     records.update(
                 {},
                 data,
                 upsert=True,)
+    
     return redirect("http://localhost:5000/", code=302)
 
 
