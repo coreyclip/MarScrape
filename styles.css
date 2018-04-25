@@ -2,7 +2,7 @@
     background-color: #eee;
 }
 
-#white_bold {
+.white_bold {
     color: whitesmoke;
     font-family: Courier New, Courier, monospace;
     border: #eee;

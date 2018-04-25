@@ -11,11 +11,19 @@
 </head>
 
 <body>
-    <div class="container text-center", style="background:transparent url('imgs/mission_to_mars.jpg') no-repeat center center /cover;">
+    <div class="container text-center", style="background:transparent url('imgs/mission_to_mars.jpg') no-repeat center center /cover; margin-bottom:5px; height:121pt;width: auto;">
         <h1 class="white_bold" >Mars Facts</h1>
             <div class='col-md-12'> 
-                <button class='btn-primary btn-lg' href='/scrape'>Find Mars Facts</button>
-                    
+                <button class='btn-primary btn-lg' href='/scrape' role='button'>Find Mars Facts</button>
+                    </div>
+        <div class='row'>
+            <div class='col-md-10'>
+
+                </div>
+            <div class='col-md-2'>
+                <butoon class='btn-primary btn-lg' href="/hemispheres.html">More Mars Pics</butoon>
+                </div>
+                
             </div>
         </div>
 
@@ -23,24 +31,24 @@
         <div class='row'>
             <div class='col-md-12'>
                 <h1>Latest Martian News</h1>
-                <h3>headline</h3>
-                <p> Martian news</p>
+                <h3>{{records['nasa_news'][0]['title']}}</h3>
+                <p> {{records['nasa_news'][0]['headline']}}</p>
             </div>
         </div>
 
         <div class='row'>
                 <div class='col-6-md'>
                     <h1> Featured Mars Image</h1>
-                    <img>
+                    <img src={{records["featured_image_url"]}} alt="featured martian image">
 
                 </div>
                 <div class='col-6-md'>
                     <div class='row'>
                         <h4>Martian Weather</h4>
-                        <p>{{ weather }}</p>
+                        <p>{{ records['martian_weather'] }}</p>
                         </div>
                     <div class='row'>
-                        <p>Martian Facts</p>
+                        {{records['fact_table']}}
                         </div>
                 </div>
                 
