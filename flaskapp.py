@@ -22,7 +22,11 @@ def index():
     #print('Mongo Initialized')
 
     #print(f"loading data from {doc['timestamp']}")
-    records = doc['records']
+    try:
+        records = doc['records']
+    except TypeError:
+        import mars_scrape
+        records = mars_scrape.scrape_nasa()['records']
     return render_template("index.html", records=records)
 
 #  route called `/scrape` that will import
@@ -35,7 +39,7 @@ def scrape():
     client = pymongo.MongoClient(conn)
     db = client.mars_scrape
     #delete previous data
-    db.mars_web.delete_one()  
+    db.mars_web.delete_many({})  
     # perform scraping
     print("Scrapping new data") 
     import mars_scrape

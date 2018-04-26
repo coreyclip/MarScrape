@@ -163,4 +163,4 @@ def scrape_nasa():
         print(e)
     return final_json
 
-#scrape_nasa()
+scrape_nasa()
