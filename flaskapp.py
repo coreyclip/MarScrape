@@ -1,37 +1,27 @@
-from flask import Flask, jsonify, render_template, redirect
+from flask import Flask, render_template, redirect, url_for
 import pymongo
-import mars_scrape
 #from flask_pymongo import PyMongo
 
 # Initialize PyMongo to work with MongoDBs
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
+#conn = 'mongodb://localhost:27017'
+#client = pymongo.MongoClient(conn)
 
 app = Flask(__name__)
 #mongo = PyMongo(app)
 
-def mongo_pull():
-    # Define database and collection
-    db = client.mars_scrape
-    # by definition find_one gets the most recent doc, if no query logic
-    doc = db.mars_web.find_one()
-    print('Mongo Initialized')
 
-    print(f"loading data from {doc['timestamp']}")
-    records = doc['records']
-
-    return records
 
 #index page
 @app.route('/')
 def index():
     # Define database and collection
+    conn = 'mongodb://localhost:27017'
+    client = pymongo.MongoClient(conn)
     db = client.mars_scrape
-    # by definition find_one gets the most recent doc, if no query logic
     doc = db.mars_web.find_one()
-    print('Mongo Initialized')
+    #print('Mongo Initialized')
 
-    print(f"loading data from {doc['timestamp']}")
+    #print(f"loading data from {doc['timestamp']}")
     records = doc['records']
     return render_template("index.html", records=records)
 
@@ -41,20 +31,19 @@ def index():
 
 @app.route("/scrape")
 def scrape():
+    conn = 'mongodb://localhost:27017'
+    client = pymongo.MongoClient(conn)
+    db = client.mars_scrape
+    #delete previous data
+    db.mars_web.delete_one()  
     # perform scraping
     print("Scrapping new data") 
+    import mars_scrape
     data = mars_scrape.scrape_nasa()
-    # Define database and collection
+    # Define database and collection  
     db = client.mars_scrape.mars_web
     # by definition find_one gets the most recent doc, if no query logic
-    print('Mongo Initialized')
-    db.update(
-                {},
-                data,
-                upsert=True,)
-    
-
-    doc = db.find_one()
+    db.update({},data,upsert=True,)
 
     return redirect("http://localhost:5000/", code=302)
 

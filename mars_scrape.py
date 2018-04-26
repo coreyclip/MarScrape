@@ -6,6 +6,9 @@ from splinter import Browser
 from pprint import pprint
 from datetime import datetime
 import pymongo
+from bson.json_util import loads
+import json 
+import pytz
 
 def scrape_nasa():
     print("Initialize PyMongo to work with MongoDBs")
@@ -59,7 +62,7 @@ def scrape_nasa():
     for title, hl in zip(titles, headlines):
         news_records.append({
                 'title': title,
-                'headline':hl,
+                'headline': '"' + hl + '"',
                 })
 
     print('finished gathering news_records')    
@@ -74,12 +77,12 @@ def scrape_nasa():
     img_soup = bs(browser.html, 'html.parser')
     print("locate the featured image src")
     print(img_soup.find("img"))
-    print(f'{" " *10}|\n' *4 )
+    print(f'{" " *10}|\n' *2 )
     print(img_soup.find("img", class_="fancybox-image"))
-    print(f'{" " *10}|\n' *4 )
+    print(f'{" " *10}|\n' *2 )
 
     print(img_soup.find("img", class_="fancybox-image")['src'])
-    featured_image_url = "https://www.jpl.nasa.gov/spaceimages" + img_soup.find("img", class_="fancybox-image")['src']
+    featured_image_url = "https://www.jpl.nasa.gov/" + img_soup.find("img", class_="fancybox-image")['src']
     print("featured_image_url:" + featured_image_url)
 
     browser.visit(weather_url)
@@ -108,12 +111,14 @@ def scrape_nasa():
     # print(table)
     raw_table = pd.read_html(str(table), flavor="bs4")
 
-    #print(type(raw_table))
+    
+    print(raw_table)
     headers = raw_table[0][0]
     data = raw_table[0][1]
 
     # saving it as a dataframe
-    df = pd.DataFrame(data=[headers,data.values]).rename(columns=['',''])
+    df = pd.DataFrame([headers.values,data.values]).T
+    print(df)
 
     #saving it as a new string
     reformated_table_str = df.to_html()
@@ -125,26 +130,37 @@ def scrape_nasa():
         {"title": "Schiaparelli Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/schiaparelli_enhanced.tif/full.jpg"},
         {"title": "Syrtis Major Hemisphere", "img_url": "https://astropedia.astrogeology.usgs.gov/download/Mars/Viking/syrtis_major_enhanced.tif/full.jpg"},
     ]
-
-
-
+    
+    '''
+    try adding a timezone to format 
+    '''
+    
+    timestamp = str(datetime.now())    
+    
     final_json = {
-        "timestamp":str(datetime.now()),
+        
+        'timestamp':timestamp,
+        #"timestamp":{
+        #   "$date": timestamp,
+        #    },
         "records":{
             "nasa_news": news_records,
             "featured_image_url":featured_image_url,
             "martian_weather":mars_weather,
             "fact_table": reformated_table_str,
-            "hemisphere_images_urls":hemisphere_image_urls,
+            "hemisphere_images_urls": hemisphere_image_urls,
             }
         }
 
     print("record to be inserted to MongoDB")
-    print("====" * 50)
-    pprint(final_json)
+    print("====" * 20)
+    #pprint(final_json)
     try:
         collection.insert_one(final_json)
+        #how we would input if we had $date
+        #collection.insert_one(loads(json.dumps(final_json)))
     except Exception as e:
         print(e)
     return final_json
 
+#scrape_nasa()
