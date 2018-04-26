@@ -79,8 +79,8 @@ def scrape_nasa():
     print(f'{" " *10}|\n' *4 )
 
     print(img_soup.find("img", class_="fancybox-image")['src'])
-    featured_image_url = img_soup.find("img", class_="fancybox-image")['src']
-
+    featured_image_url = "https://www.jpl.nasa.gov/spaceimages" + img_soup.find("img", class_="fancybox-image")['src']
+    print("featured_image_url:" + featured_image_url)
 
     browser.visit(weather_url)
     twitter_soup = bs(browser.html, 'html.parser')
@@ -113,7 +113,7 @@ def scrape_nasa():
     data = raw_table[0][1]
 
     # saving it as a dataframe
-    df = pd.DataFrame(data=data.values).T.rename(columns=headers)
+    df = pd.DataFrame(data=[headers,data.values]).rename(columns=['',''])
 
     #saving it as a new string
     reformated_table_str = df.to_html()

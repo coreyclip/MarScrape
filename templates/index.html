@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Wow Mars!</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" media="screen" href='../styles.css'/>
+  <link rel="stylesheet" type="text/css" media="screen" href='styles.css'/>
 </head>
 
 <body>
@@ -51,7 +51,7 @@
                         <p>{{ records['martian_weather'] }}</p>
                         </div>
                     <div class='row'>
-                            {{records['fact_table']}}
+                            {{records['fact_table'] | safe}}
                         </div>
                 </div>
                 

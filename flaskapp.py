@@ -22,11 +22,17 @@ def mongo_pull():
 
     return records
 
-records = mongo_pull()    
-
 #index page
 @app.route('/')
-def index(records):
+def index():
+    # Define database and collection
+    db = client.mars_scrape
+    # by definition find_one gets the most recent doc, if no query logic
+    doc = db.mars_web.find_one()
+    print('Mongo Initialized')
+
+    print(f"loading data from {doc['timestamp']}")
+    records = doc['records']
     return render_template("index.html", records=records)
 
 #  route called `/scrape` that will import
@@ -34,15 +40,22 @@ def index(records):
 #  script and call your `scrape` function.
 
 @app.route("/scrape")
-def scrape(records):
-    # perform scraping 
+def scrape():
+    # perform scraping
+    print("Scrapping new data") 
     data = mars_scrape.scrape_nasa()
-    records = mongo_pull()    
-    records.update(
+    # Define database and collection
+    db = client.mars_scrape.mars_web
+    # by definition find_one gets the most recent doc, if no query logic
+    print('Mongo Initialized')
+    db.update(
                 {},
                 data,
                 upsert=True,)
     
+
+    doc = db.find_one()
+
     return redirect("http://localhost:5000/", code=302)
 
 
