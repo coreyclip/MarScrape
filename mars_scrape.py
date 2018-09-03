@@ -66,7 +66,7 @@ def scrape_nasa():
                 })
 
     print('finished gathering news_records')    
-    pprint(news_records)
+    # pprint(news_records)
 
 
     print('gathering featured images')
@@ -121,7 +121,10 @@ def scrape_nasa():
     print(df)
 
     #saving it as a new string
-    reformated_table_str = df.to_html()
+    df.columns = ['', '']
+    reformated_table_str = df.to_html(index=False).replace('<tr>','<tr style ={"background-color:  rgba(1, 22, 39, 1),' +
+                                 ' color: rgba(253, 255, 252, 1)}>').\
+                                replace('<table border="1" class="dataframe">','<table class="table table-hover">' )
     print(reformated_table_str)
 
     hemisphere_image_urls = [

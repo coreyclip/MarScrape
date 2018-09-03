@@ -13,4 +13,28 @@
     text-align: center;
 }
 
+.section-heading {
+    font-family: Courier New, Courier, monospace;
+    color: rgb(253, 255, 252);
+    font-weight: 700;
+    background-color: rgba(255, 159, 28, 1);
+    padding-bottom: 5%;
+    border-bottom-color: rgba(1, 22, 39, 1);
+}
+
+.sub-heading {
+    font-family: Courier New, Courier, monospace;
+    color: rgb(253, 255, 252);
+    font-weight: 700;
+    background-color: rgba(46, 196, 182, 1);
+    padding-bottom: 5%;
+    border-bottom-color:  rgba(1, 22, 39, 1);
+}
+
+
+hr {
+    color: rgba(231, 29, 54, 1);
+}
+
+
 

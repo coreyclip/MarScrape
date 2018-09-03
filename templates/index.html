@@ -11,67 +11,72 @@
 </head>
 
 <body>
-    <div class="container text-center", style="background:transparent url('static/mission_to_mars.jpg') no-repeat center center /cover; margin-bottom:4px; height:111pt;width: auto;">
-        <h1 class="white_bold" >Mars Facts</h1>
-            <div class='col-md-12'> 
-                <p><a class='btn-primary btn-lg' href='/scrape' role='button'>Find Mars Facts</a></p> 
-                    </div>
-    <div class="container-fluid text-left">
-        <div class='row'>
+    <div class="container-fluid">
+        <div class="row" style="background:transparent url('static/mission_to_mars.jpg') no-repeat center center /cover; margin-bottom:4px; height:111pt;width: auto;">
+           <h1 class="white_bold text-center" >Mars Facts</h1>
             <div class='col-md-12'>
-                <h1>Latest Martian News</h1>
+                <p><a class='btn-primary btn-lg' href='/scrape' role='button'>Scrape Mars Facts</a></p>
+                    </div>
+        </div>
+        <div class='row text-left'>
+            <div class='col-md-12'>
+                <h1 class="section-heading mt-5">Latest Martian News</h1>
                 <h3>{{records['nasa_news'][0]['title']}}</h3>
                 <p> {{records['nasa_news'][0]['headline']}}</p>
                 <h3>{{records['nasa_news'][1]['title']}}</h3>
                 <p> {{records['nasa_news'][1]['headline']}}</p>
+                <p>{{records['nasa_news'][1]['url']}}</p>
             </div>
         </div>
 
-        <div class='row'>
-                <div class='col-8-md'>
-                    <h1> Featured Mars Image</h1>
+        <div class='row text-left'>
+                <div class='col-10-md'>
+                    <h1 class="mt-5 section-heading"> Featured Mars Image</h1>
                     <img src= {{ records["featured_image_url"] }}  alt="featured martian image">
 
                 </div>
-                <div class='col-4-md'>
-                    <div class='row'>
-                        <h4>Martian Weather</h4>
+        </div>
+        <div class="row">
+                <div class='col-3-md'>
+
+                        <h4 class="mt-5 section-heading">Martian Weather</h4>
                         <p>{{ records['martian_weather'] }}</p>
                         </div>
-                    <div class='row'>
-                            {{records['fact_table'] | safe}}
-                        </div>
+                <div class="col-6-md">
+
+                           {{records['fact_table'] | safe}}
+
                 </div>
                 
             </div>
-            
-        <h1 class='text-center'>Views of Mars</h1>
-                
-            <div class='container'>
+
+
+        <hr>
+        <h1 class='text-center class="mt-5 section-heading"'>Views of Mars</h1>
                 <div class='row'>
                     <div class='col-md-6'>
-                        <h3>{{ records['hemisphere_images_urls'][0]['title'] }}</h3>
+                        <h3 class="sub-heading">{{ records['hemisphere_images_urls'][0]['title'] }}</h3>
                         <img src= {{ records['hemisphere_images_urls'][0]['img_url'] }} width="200" height="200">
                     </div>
                     <div class='col-md-6'>
-                            <h3>{{ records['hemisphere_images_urls'][1]['title'] }}</h3>
+                            <h3 class="sub-heading">{{ records['hemisphere_images_urls'][1]['title'] }}</h3>
                             <img src= {{ records['hemisphere_images_urls'][1]['img_url'] }} width="200" height="200">
                     </div>
                 </div>
         
                 <div class='row'>
                     <div class='col-md-6'>
-                            <h3>{{ records['hemisphere_images_urls'][2]['title'] }}</h3>
+                            <h3 class="sub-heading">{{ records['hemisphere_images_urls'][2]['title'] }}</h3>
                             <img src= {{ records['hemisphere_images_urls'][2]['img_url'] }} width="200" height="200">
                     </div>
                     <div class='col-md-6'>
-                            <h3>{{ records['hemisphere_images_urls'][3]['title'] }}</h3>
+                            <h3 class="sub-heading">{{ records['hemisphere_images_urls'][3]['title'] }}</h3>
                             <img src= {{ records['hemisphere_images_urls'][3]['img_url'] }} width="200" height="200">
                     </div>
                 </div>
         
             </div>    
-        </div>  
+
     
   </body>
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
